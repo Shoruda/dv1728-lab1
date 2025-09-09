@@ -1,0 +1,404 @@
+make all -f /home/axel/dv1728-lab1/Makefile --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 4.3
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2020 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Tue Sep  9 13:20:59 2025
+
+# Variables
+
+# environment
+GDK_BACKEND = x11
+# environment
+LC_ALL = C
+# environment
+GNOME_SHELL_SESSION_MODE = ubuntu
+# environment
+SSH_AGENT_LAUNCHER = gnome-keyring
+# environment
+LC_NAME = sv_SE.UTF-8
+# environment
+LC_NUMERIC = sv_SE.UTF-8
+# environment
+VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
+# environment
+VSCODE_CWD = /home/axel
+# environment
+WINDOWPATH = 2
+# environment
+LC_ADDRESS = sv_SE.UTF-8
+# default
+MAKE_COMMAND := make
+# environment
+QT_ACCESSIBILITY = 1
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# default
+.VARIABLES := 
+# environment
+PWD = /home/axel/dv1728-lab1
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+XDG_DATA_DIRS = /usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# automatic
+%F = $(notdir $%)
+# environment
+VSCODE_CODE_CACHE_PATH = /home/axel/.config/Code/CachedData/6c3e3dba23e8fadc360aed75ce363ba185c49794
+# environment
+LANG = C
+# environment
+XAUTHORITY = /run/user/1000/gdm/Xauthority
+# default
+.LOADED := 
+# default
+.INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
+# makefile
+MAKEFLAGS = pqrR
+# environment
+DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=3489910b0e7d93bd4912849668c027e0
+# makefile
+CURDIR := /home/axel/dv1728-lab1
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# environment
+LESSOPEN = | /usr/bin/lesspipe %s
+# environment
+VSCODE_L10N_BUNDLE_LOCATION = 
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+MFLAGS = -pqrR
+# environment
+SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
+# default
+.SHELLFLAGS := -c
+# environment
+XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+XDG_SESSION_DESKTOP = ubuntu
+# makefile (from '/home/axel/dv1728-lab1/Makefile', line 1)
+MAKEFILE_LIST := /home/axel/dv1728-lab1/Makefile
+# automatic
+@F = $(notdir $@)
+# environment
+VSCODE_PID = 5509
+# environment
+XDG_SESSION_TYPE = x11
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# environment
+SESSION_MANAGER = local/axel-AN515:@/tmp/.ICE-unix/2044,unix/axel-AN515:/tmp/.ICE-unix/2044
+# automatic
+*F = $(notdir $*)
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=3489910b0e7d93bd4912849668c027e0
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","osLocale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# environment
+GNOME_DESKTOP_SESSION_ID = this-is-deprecated
+# makefile
+SHELL = /bin/sh
+# default
+MAKECMDGOALS := all
+# environment
+XMODIFIERS = @im=ibus
+# environment
+SHLVL = 0
+# environment
+MAKELEVEL := 0
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin
+# default
+MAKEFILES := 
+# environment
+LC_MONETARY = sv_SE.UTF-8
+# automatic
+^F = $(notdir $^)
+# environment
+LC_TIME = sv_SE.UTF-8
+# environment
+INVOCATION_ID = 5beca97400084a7b9a29238a189f1a5b
+# environment
+USERNAME = axel
+# environment
+LC_TELEPHONE = sv_SE.UTF-8
+# environment
+LESSCLOSE = /usr/bin/lesspipe %s %s
+# automatic
+?F = $(notdir $?)
+# environment
+GTK_IM_MODULE = ibus
+# environment
+XDG_CURRENT_DESKTOP = Unity
+# automatic
++F = $(notdir $+)
+# environment
+DESKTOP_SESSION = ubuntu
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+LOGNAME = axel
+# environment
+GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
+# makefile
+.DEFAULT_GOAL := all
+# environment
+SYSTEMD_EXEC_PID = 2044
+# environment
+DISPLAY = :1
+# environment
+USER = axel
+# environment
+GTK_MODULES = gail:atk-bridge
+# default
+MAKE_VERSION := 4.3
+# environment
+MANAGERPID = 1690
+# environment
+DBUS_STARTER_BUS_TYPE = session
+# environment
+LC_MEASUREMENT = sv_SE.UTF-8
+# environment
+GIO_LAUNCHED_DESKTOP_FILE_PID = 5509
+# environment
+_ = /usr/share/code/code
+# environment
+LC_PAPER = sv_SE.UTF-8
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# environment
+GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
+# environment
+JOURNAL_STREAM = 8:32243
+# environment
+XDG_SESSION_CLASS = user
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /home/axel
+# environment
+QT_IM_MODULE = ibus
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-9399bfde-1.81-main.sock
+# default
+.RECIPEPREFIX := 
+# automatic
+<F = $(notdir $<)
+# default
+SUFFIXES := 
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
+# environment
+XDG_MENU_PREFIX = gnome-
+# makefile (from '/home/axel/dv1728-lab1/Makefile', line 2)
+LD_FLAGS = -Wall -L./ 
+# environment
+GDMSESSION = ubuntu
+# environment
+LC_IDENTIFICATION = sv_SE.UTF-8
+# makefile (from '/home/axel/dv1728-lab1/Makefile', line 1)
+CC_FLAGS = -Wall -I.
+# variable set hash-table stats:
+# Load=105/1024=10%, Rehash=0, Collisions=5/138=4%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+
+# No files, no impossibilities in 0 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+clientmain.o: clientmain.cpp
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/home/axel/dv1728-lab1/Makefile', line 11):
+	$(CXX) $(CC_FLAGS) $(CFLAGS) -c clientmain.cpp 
+
+client: clientmain.o calcLib.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/home/axel/dv1728-lab1/Makefile', line 21):
+	$(CXX) $(LD_FLAGS) -o client clientmain.o -lcalc
+
+# Not a target:
+servermain.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+calcLib.h:
+#  Implicit rule search has been done.
+#  Last modified 2025-09-09 13:19:47.080029378
+#  File has been updated.
+#  Successfully updated.
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/home/axel/dv1728-lab1/Makefile', line 34):
+	rm *.o *.a test server client
+
+libcalc: calcLib.o
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/3=0%
+#  recipe to execute (from '/home/axel/dv1728-lab1/Makefile', line 31):
+	ar -rc libcalc.a -o calcLib.o
+
+server: servermain.o calcLib.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/home/axel/dv1728-lab1/Makefile', line 24):
+	$(CXX) $(LD_FLAGS) -o server servermain.o -lcalc
+
+# Not a target:
+clientmain.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+calcLib.c:
+#  Implicit rule search has been done.
+ 
+#  Last modified 2025-09-09 13:19:47.080029378
+#  File has been updated.
+#  Successfully updated.
+
+calcLib.o: calcLib.c calcLib.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := calcLib.o
+# automatic
+# * := 
+# automatic
+# < := calcLib.c
+# automatic
+# + := calcLib.c calcLib.h
+# automatic
+# % := 
+# automatic
+# ^ := calcLib.c calcLib.h
+# automatic
+# ? := calcLib.c calcLib.h
+# automatic
+# | := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/11=9%
+#  recipe to execute (from '/home/axel/dv1728-lab1/Makefile', line 28):
+	gcc -Wall -fPIC -c calcLib.c
+
+# Not a target:
+/home/axel/dv1728-lab1/Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2025-09-09 13:19:47.080029378
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+all: libcalc test client server
+#  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/3=0%
+
+servermain.o: servermain.cpp
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/home/axel/dv1728-lab1/Makefile', line 8):
+	$(CXX)  $(CC_FLAGS) $(CFLAGS) -c servermain.cpp 
+
+# Not a target:
+main.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+test: main.o calcLib.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/home/axel/dv1728-lab1/Makefile', line 18):
+	$(CXX) $(LD_FLAGS) -o test main.o -lcalc
+
+main.o: main.cpp
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from '/home/axel/dv1728-lab1/Makefile', line 14):
+	$(CXX) $(CC_FLAGS) $(CFLAGS) -c main.cpp 
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# files hash-table stats:
+# Load=18/1024=2%, Rehash=0, Collisions=0/51=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 20 / storage = 222 B / avg = 11 B
+# current buf: size = 8162 B / used = 222 B / count = 20 / avg = 11 B
+
+# strcache performance: lookups = 46 / hit rate = 56%
+# hash-table stats:
+# Load=20/8192=0%, Rehash=0, Collisions=0/46=0%
+# Finished Make data base on Tue Sep  9 13:20:59 2025
+
+ 

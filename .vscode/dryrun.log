@@ -1,0 +1,12 @@
+make -f /home/axel/dv1728-lab1/Makefile --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/axel/dv1728-lab1'
+gcc -Wall -fPIC -c calcLib.c
+ar -rc libcalc.a -o calcLib.o
+g++ -Wall -I.  -c main.cpp 
+g++ -Wall -L./  -o test main.o -lcalc
+g++ -Wall -I.  -c clientmain.cpp 
+g++ -Wall -L./  -o client clientmain.o -lcalc
+g++  -Wall -I.  -c servermain.cpp 
+g++ -Wall -L./  -o server servermain.o -lcalc
+make: Leaving directory '/home/axel/dv1728-lab1'
+ 

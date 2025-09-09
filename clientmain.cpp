@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 /* You will to add includes here */
-
+/*edit*/
+/*TEST*/
 // Enable if you want debugging to be printed, see examble below.
 // Alternative, pass CFLAGS=-DDEBUG to make, make CFLAGS=-DDEBUG
 #define DEBUG
