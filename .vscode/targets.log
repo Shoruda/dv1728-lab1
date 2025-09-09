@@ -6,7 +6,7 @@ make all -f /home/axel/dv1728-lab1/Makefile --print-data-base --no-builtin-varia
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Sep  9 13:30:19 2025
+# Make data base, printed on Tue Sep  9 13:58:37 2025
 
 # Variables
 
@@ -89,13 +89,13 @@ MAKEFILE_LIST := /home/axel/dv1728-lab1/Makefile
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 7406
+VSCODE_PID = 3358
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/axel-AN515:@/tmp/.ICE-unix/2044,unix/axel-AN515:/tmp/.ICE-unix/2044
+SESSION_MANAGER = local/axel-AN515:@/tmp/.ICE-unix/2041,unix/axel-AN515:/tmp/.ICE-unix/2041
 # automatic
 *F = $(notdir $*)
 # environment
@@ -135,7 +135,7 @@ LC_MONETARY = sv_SE.UTF-8
 # environment
 LC_TIME = sv_SE.UTF-8
 # environment
-INVOCATION_ID = aebe05c0ca3f4d24a3cdc5b38e7f96d1
+INVOCATION_ID = d17935f5dabb4661bb3e5738eee04f53
 # environment
 USERNAME = axel
 # environment
@@ -163,7 +163,7 @@ GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # makefile
 .DEFAULT_GOAL := all
 # environment
-SYSTEMD_EXEC_PID = 2066
+SYSTEMD_EXEC_PID = 2064
 # environment
 DISPLAY = :1
 # environment
@@ -177,7 +177,7 @@ MANAGERPID = 1690
 # environment
 LC_MEASUREMENT = sv_SE.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 7406
+GIO_LAUNCHED_DESKTOP_FILE_PID = 3358
 # environment
 _ = /usr/share/code/code
 # environment
@@ -187,7 +187,7 @@ XDG_RUNTIME_DIR = /run/user/1000
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-JOURNAL_STREAM = 8:30434
+JOURNAL_STREAM = 8:33033
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -284,11 +284,11 @@ server: servermain.o calcLib.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+ 
 #  recipe to execute (from '/home/axel/dv1728-lab1/Makefile', line 24):
 	$(CXX) $(LD_FLAGS) -o server servermain.o -lcalc
 
 # Not a target:
- 
 clientmain.cpp:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -397,6 +397,6 @@ main.o: main.cpp
 # strcache performance: lookups = 46 / hit rate = 56%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=0/46=0%
-# Finished Make data base on Tue Sep  9 13:30:19 2025
+# Finished Make data base on Tue Sep  9 13:58:37 2025
 
  
