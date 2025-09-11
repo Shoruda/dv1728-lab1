@@ -16,6 +16,39 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 
+#include <iostream>
+
+int calculate(const char* buf)
+{
+  char operation[8];
+  int value1, value2;
+  if (sscanf(buf, "%7s %d %d", operation, &value1, &value2) != 3)
+  {
+    fprintf(stderr, "ERROR: INVALID FORMAT\n");
+    return 0;
+  }
+  if (strcmp(operation, "add") == 0) {
+    return value1 + value2;
+  } 
+  else if (strcmp(operation, "sub") == 0) {
+    return value1 - value2;
+  } 
+  else if (strcmp(operation, "mul") == 0) {
+    return value1 * value2;
+  } 
+  else if (strcmp(operation, "div") == 0) {
+    if (value2 == 0) {
+      fprintf(stderr, "ERROR: DIVISION BY ZERO\n");
+      return 0;
+    }
+    return value1 / value2;
+  } 
+  else {
+    fprintf(stderr, "ERROR: UNKNOWN OPERATION '%s'\n", operation);
+    return 0;
+  }
+}
+
 int setup_connection(const char* host, int port, int socktype)
 {
   printf("SETUP");
@@ -45,17 +78,23 @@ int setup_connection(const char* host, int port, int socktype)
       //TCP
       if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1)
       {
-        perror("connect");
+        perror("tcp connect");
         close(sockfd);
         continue;
       }
 
-    } else
+    } 
+    else if(socktype == SOCK_DGRAM)
     {
-    //UDP
+      //UDP
+      if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+        perror("udp connect");
+        close(sockfd);
+        continue;
+      }
     }
 
-    break;
+  break;
   }
 
   freeaddrinfo(servinfo);
@@ -73,21 +112,93 @@ int tcp_text_handler(const char* host, int port)
 { 
   printf("TCP + TEXT");
   int sockfd = setup_connection(host, port, SOCK_STREAM);
-    if (sockfd < 0) return -1;
+  if (sockfd < 0) return -1;
+  
+  char recv_buffer[1024];
+  ssize_t bytes_received; 
+  if ((bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) -1, 0)) == -1)
+  {
+    perror("TCP + TEXT: recv");
+    exit(1);
+  }
+  printf("\n%s", recv_buffer);
 
-    char recv_buffer[1024];
-    size_t bytes_recieved = recv(sockfd, recv_buffer, sizeof(recv_buffer) -1, 0);
-
-    printf("\n%s", recv_buffer);
+  char send_buffer[32];
+  snprintf(send_buffer, sizeof(send_buffer), "TEXT TCP 1.1 OK\n");
+  if (send(sockfd, send_buffer, strlen(send_buffer), 0) == -1) {
+    perror("TCP + TEXT: send");
     close(sockfd);
-    return 0;
+    return -1;
+  }
+
+  if ((bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) -1, 0)) == -1)
+  {
+    perror("TCP + TEXT: recv");
+    exit(1);
+  }
+  printf("\n%s", recv_buffer);
+
+  int result = calculate(recv_buffer);
+  snprintf(send_buffer, sizeof(send_buffer), "%d\n", result);
+  if (send(sockfd, send_buffer, strlen(send_buffer), 0) == -1) {
+    perror("TCP + TEXT: send result");
+    close(sockfd);
+    return -1;
+  }
+
+  if ((bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) - 1, 0)) <= 0) {
+    perror("TCP + TEXT: recv response");
+    close(sockfd);
+    return -1;
+  }
+  recv_buffer[bytes_received] = '\0';
+  printf("Server response: %s", recv_buffer);
+  close(sockfd);
+  return 0;
 }
 int tcp_binary_handler(const char* host, int port)
 {
+  printf("TCP + BINARY");
+  int sockfd = setup_connection(host, port, SOCK_STREAM);
+  if (sockfd < 0) return -1;
+
+  char recv_buffer[1024];
+  ssize_t bytes_recieved; 
+  if ((bytes_recieved = recv(sockfd, recv_buffer, sizeof(recv_buffer) -1, 0)) == -1)
+  {
+    perror("TCP + BINARY: recv");
+    exit(1);
+  }
+
+  printf("\n%s", recv_buffer);
+  close(sockfd);
   return 0;
 }
 int udp_text_handler(const char* host, int port)
 {
+  printf("UDP + TEXT");
+  int sockfd = setup_connection(host, port, SOCK_DGRAM);
+  if (sockfd < 0) return -1;
+
+  const char *msg = "TEXT UDP 1.1\n";
+  ssize_t sent = send(sockfd, msg, strlen(msg), 0);
+  if (sent == -1) {
+    perror("UDP + TEXT: send");
+    close(sockfd);
+    return -1;
+  }
+
+  char recv_buffer[1024];
+  ssize_t bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) - 1, 0);
+  if (bytes_received == -1) {
+    perror("UDP + TEXT: recv");
+    close(sockfd);
+    return -1;
+  }
+
+  printf("%s\n", recv_buffer);
+
+  close(sockfd);
   return 0;
 }
 int udp_binary_handler(const char* host, int port)
@@ -227,8 +338,15 @@ int main(int argc, char *argv[]){
   //   sa_family_t sa_family_t;
   //   char sa_data[14];
   // };
+  for (int i = 0; protocolstring[i]; i++) {
+    protocolstring[i] = tolower(protocolstring[i]);
+  }
+
+  for (int i = 0; pathstring[i]; i++) {
+    pathstring[i] = tolower(pathstring[i]);
+  }
   
-  if(strcmp(protocol, "TCP") == 0) 
+  if(strcmp(protocol, "tcp") == 0) 
   {
     if(strcmp(Destpath, "text") == 0) 
     {
@@ -239,7 +357,7 @@ int main(int argc, char *argv[]){
       tcp_binary_handler(Desthost, port);
     }
   }
-  else if (strcmp(protocol, "UDP") == 0)
+  else if (strcmp(protocol, "udp") == 0)
   {
     if(strcmp(Destpath, "text") == 0) 
     {
