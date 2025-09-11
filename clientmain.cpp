@@ -7,11 +7,95 @@
 #define DEBUG
 /*TEST*/
 
-
-
 //A
 // Included to get the support library
 #include <calcLib.h>
+
+#include <unistd.h>
+#include <netdb.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+
+int setup_connection(const char* host, int port, int socktype)
+{
+  printf("SETUP");
+  struct addrinfo hints, *servinfo, *p;
+  char portstr[6];
+  int rv, sockfd;
+
+  snprintf(portstr, sizeof(portstr), "%d", port);
+  memset(&hints, 0, sizeof(hints));
+  hints.ai_family = AF_UNSPEC;
+  hints.ai_socktype = socktype;
+
+  if ((rv = getaddrinfo(host, portstr, &hints, &servinfo)) != 0) {
+    fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+    return -1;
+  }
+
+  for (p = servinfo; p != NULL; p = p->ai_next) {
+    sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+    if (sockfd == -1) 
+    {
+      perror("socket");
+      continue;
+    }
+    if (socktype == SOCK_STREAM)
+    {
+      //TCP
+      if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1)
+      {
+        perror("connect");
+        close(sockfd);
+        continue;
+      }
+
+    } else
+    {
+    //UDP
+    }
+
+    break;
+  }
+
+  freeaddrinfo(servinfo);
+
+  if(p==NULL)
+  {
+    fprintf(stderr, "setup_connection: failed to connect to %s:%d\n", host, port);
+    return -1;
+  }
+
+  return sockfd;
+}
+
+int tcp_text_handler(const char* host, int port)
+{ 
+  printf("TCP + TEXT");
+  int sockfd = setup_connection(host, port, SOCK_STREAM);
+    if (sockfd < 0) return -1;
+
+    char recv_buffer[1024];
+    size_t bytes_recieved = recv(sockfd, recv_buffer, sizeof(recv_buffer) -1, 0);
+
+    printf("\n%s", recv_buffer);
+    close(sockfd);
+    return 0;
+}
+int tcp_binary_handler(const char* host, int port)
+{
+  return 0;
+}
+int udp_text_handler(const char* host, int port)
+{
+  return 0;
+}
+int udp_binary_handler(const char* host, int port)
+{
+  return 0;
+}
+
+
 
 int main(int argc, char *argv[]){
   
@@ -135,10 +219,45 @@ int main(int argc, char *argv[]){
     }
     return 1;
   }
+
+  // int bind(int sockfd, const struct sockaddr * addr, socklen_t addrlen);
+  
+  // struct sockaddr{
+  //   uint8_t sa_len;
+  //   sa_family_t sa_family_t;
+  //   char sa_data[14];
+  // };
+  
+  if(strcmp(protocol, "TCP") == 0) 
+  {
+    if(strcmp(Destpath, "text") == 0) 
+    {
+      tcp_text_handler(Desthost, port);
+    }
+    else if(strcmp(Destpath, "binary") == 0)
+    {
+      tcp_binary_handler(Desthost, port);
+    }
+  }
+  else if (strcmp(protocol, "UDP") == 0)
+  {
+    if(strcmp(Destpath, "text") == 0) 
+    {
+      udp_text_handler(Desthost, port);
+    }
+    else if(strcmp(Destpath, "binary") == 0)
+    {
+      udp_binary_handler(Desthost, port);
+    }
+  }
+  else
+  {
+    printf("INGET MATCHANDE PROTOCOL ELLER PATH");
+    return -1;
+  }
+  
+
 #ifdef DEBUG 
   printf("Protocol: %s Host %s, port = %d and path = %s.\n",protocol, Desthost,port, Destpath);
 #endif
-
-
-  
 }
