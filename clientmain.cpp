@@ -116,6 +116,12 @@ int setup_connection(const char* host, int port, int socktype)
       perror("socket");
       continue;
     }
+
+    struct timeval time;
+    time.tv_sec = 2;
+    time.tv_usec = 0;
+    setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &time, sizeof(time));
+
     if (socktype == SOCK_STREAM)
     {
       //TCP
