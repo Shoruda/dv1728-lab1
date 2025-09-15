@@ -38,10 +38,6 @@ int calculate(const char* buf)
     return value1 * value2;
   } 
   else if (strcmp(operation, "div") == 0) {
-    if (value2 == 0) {
-      fprintf(stderr, "ERROR: DIVISION BY ZERO\n");
-      return 0;
-    }
     return value1 / value2;
   } 
   else {
@@ -85,11 +81,6 @@ int calculate_protocol(const char* buf, size_t len, calcProtocol* msg)
   }
   else if(msg->arith == 4)
   {
-    if(msg->inValue2 == 0)
-    {
-      fprintf(stderr, "ERROR: DIVISION BY ZERO\n");
-      return 0;
-    }
     result = (msg->inValue1 / msg->inValue2);
     printf("ASSIGNMENT: div %d %d\n", msg->inValue1, msg->inValue2);
   }
