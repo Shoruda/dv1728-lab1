@@ -27,6 +27,7 @@ int calculate(const char* buf)
     fprintf(stderr, "ERROR: INVALID FORMAT\n");
     return 0;
   }
+  printf("ASSIGNMENT: %s", buf);
   if (strcmp(operation, "add") == 0) {
     return value1 + value2;
   } 
@@ -70,14 +71,17 @@ int calculate_protocol(const char* buf, size_t len, calcProtocol* msg)
   if(msg->arith == 1)
   {
     result = (msg->inValue1 + msg->inValue2);
+    printf("ASSIGNMENT: add %d %d\n", msg->inValue1, msg->inValue2);
   }
   else if(msg->arith == 2)
   {
     result = (msg->inValue1 - msg->inValue2);
+    printf("ASSIGNMENT: sub %d %d\n", msg->inValue1, msg->inValue2);
   }
   else if(msg->arith == 3)
   {
     result = (msg->inValue1 * msg->inValue2);
+    printf("ASSIGNMENT: mul %d %d\n", msg->inValue1, msg->inValue2);
   }
   else if(msg->arith == 4)
   {
@@ -87,6 +91,7 @@ int calculate_protocol(const char* buf, size_t len, calcProtocol* msg)
       return 0;
     }
     result = (msg->inValue1 / msg->inValue2);
+    printf("ASSIGNMENT: div %d %d\n", msg->inValue1, msg->inValue2);
   }
   msg->inResult = result;
   return result;
@@ -159,7 +164,6 @@ int setup_connection(const char* host, int port, int socktype)
 
 int tcp_text_handler(const char* host, int port)
 { 
-  printf("TCP + TEXT");
   int sockfd = setup_connection(host, port, SOCK_STREAM);
   if (sockfd < 0) return -1;
   
@@ -175,7 +179,6 @@ int tcp_text_handler(const char* host, int port)
     perror("TCP + TEXT: recv");
     exit(1);
   }
-  printf("\n%s", recv_buffer);
 
   snprintf(send_buffer, sizeof(send_buffer), "TEXT TCP 1.1 OK\n");
   if (send(sockfd, send_buffer, strlen(send_buffer), 0) == -1) {
@@ -189,7 +192,8 @@ int tcp_text_handler(const char* host, int port)
     perror("TCP + TEXT: recv");
     exit(1);
   }
-  printf("\n%s", recv_buffer);
+
+  recv_buffer[bytes_received] = '\0';
 
   int result = calculate(recv_buffer);
   snprintf(send_buffer, sizeof(send_buffer), "%d\n", result);
@@ -198,7 +202,7 @@ int tcp_text_handler(const char* host, int port)
     close(sockfd);
     return -1;
   }
-
+  memset(recv_buffer, 0, sizeof(recv_buffer));
   if ((bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) - 1, 0)) <= 0) {
     perror("TCP + TEXT: recv response");
     close(sockfd);
@@ -206,14 +210,13 @@ int tcp_text_handler(const char* host, int port)
   }
 
   recv_buffer[bytes_received] = '\0';
-  printf("Server response: %s", recv_buffer);
+  printf("%s\n", recv_buffer);
   close(sockfd);
   return 0;
 }
 
 int tcp_binary_handler(const char* host, int port)
 {
-  printf("TCP + BINARY\n");
   int sockfd = setup_connection(host, port, SOCK_STREAM);
   if (sockfd < 0) return -1;
 
@@ -231,7 +234,6 @@ int tcp_binary_handler(const char* host, int port)
     perror("TCP + TEXT: recv");
     exit(1);
   }
-  printf("\nFIRST RECV: \n%sBYTES RECEIVED: %d ", recv_buffer, bytes_received);
 
   snprintf(send_buffer, sizeof(send_buffer), "BINARY TCP 1.1 OK\n");
   bytes_sent = send(sockfd, send_buffer, strlen(send_buffer), 0);
@@ -241,7 +243,6 @@ int tcp_binary_handler(const char* host, int port)
     return -1;
   }
 
-  printf("\nmessage sent: %sBYTES SENT: %d", send_buffer, bytes_sent);
   
 
   bytes_received = recv(sockfd, &msg, sizeof(msg), 0);
@@ -251,11 +252,8 @@ int tcp_binary_handler(const char* host, int port)
     return -1;
   }
 
-  printf("\nSERVER RESPONSE AFTER ANSWER: %sBYTES RECEIVED: %d\n", recv_buffer, bytes_received);
   int result = calculate_protocol((char*)&msg, bytes_received, &msg);
   msg.inResult = result;
-
-  printf("\nRESULT: %d", result);
 
   msg.type = 2;
 
@@ -277,7 +275,6 @@ int tcp_binary_handler(const char* host, int port)
     return -1;
   }
   calcMessage recv_msg;
-  printf("\nRESULT SENT: %d \nBYTES SENT %d", ntohl(send_msg.inResult), bytes_sent);
 
   bytes_received = recv(sockfd, &recv_msg, sizeof(recv_msg), 0);
   if ( bytes_received <= 0) {
@@ -286,7 +283,8 @@ int tcp_binary_handler(const char* host, int port)
     return -1;
   }
 
-  printf("\nFINAL SERVER RESPONSE: %d \nBYTES RECEIVED: %d\n", ntohl(recv_msg.message), bytes_received);
+  if(ntohl(recv_msg.message) == 1)
+    printf("OK\n");
   close(sockfd);
   return 0;
 }
@@ -294,7 +292,6 @@ int tcp_binary_handler(const char* host, int port)
 
 int udp_text_handler(const char* host, int port)
 {
-  printf("UDP + TEXT");
   int sockfd = setup_connection(host, port, SOCK_DGRAM);
   if (sockfd < 0) return -1;  
 
@@ -319,7 +316,7 @@ int udp_text_handler(const char* host, int port)
     return -1;
   }
 
-  printf("\n%s", recv_buffer); 
+  recv_buffer[bytes_received] = '\0';
   int result = calculate(recv_buffer);
   snprintf(send_buffer, sizeof(send_buffer), "%d\n", result);
   if (send(sockfd, send_buffer, strlen(send_buffer), 0) == -1) {
@@ -335,13 +332,13 @@ int udp_text_handler(const char* host, int port)
   }
 
   recv_buffer[bytes_received] = '\0';
-  printf("Server response: %s", recv_buffer);
+  
+  printf("%s\n", recv_buffer);
   close(sockfd);
   return 0;
 }
 int udp_binary_handler(const char* host, int port)
 {
-    printf("UDP + BINARY\n");
     int sockfd = setup_connection(host, port, SOCK_DGRAM);
     if (sockfd < 0) return -1;
     calcMessage init_msg;
@@ -360,7 +357,6 @@ int udp_binary_handler(const char* host, int port)
         close(sockfd);
         return -1;
     }
-    printf("\nFIRST SEND: %sBYTES SENT: %zd\n", send_buffer, bytes_sent);
 
     bytes_received = recv(sockfd, &msg, sizeof(msg), 0);
     if (bytes_received <= 0) {
@@ -368,15 +364,8 @@ int udp_binary_handler(const char* host, int port)
         close(sockfd);
         return -1;
     }
-    printf("\nRECIEVE CALC: BYTES RECEIVED: %zd\n", bytes_received);
-    unsigned char* raw = (unsigned char*)&msg;
-    printf("Raw bytes: ");
-    for (ssize_t i = 0; i < bytes_received; i++) {
-        printf("%02X ", raw[i]);
-    }
 
     int result = calculate_protocol((char*)&msg, bytes_received, &msg);
-    printf("\nRESULT: %d\n", result);
 
     msg.type = 2;
     calcProtocol send_msg = msg;
@@ -395,7 +384,6 @@ int udp_binary_handler(const char* host, int port)
         close(sockfd);
         return -1;
     }
-    printf("\nSEND RESULT: inResult=%d BYTES SENT: %zd\n", ntohl(send_msg.inResult), bytes_sent);
 
     calcMessage recv_msg;
     bytes_received = recv(sockfd, &recv_msg, sizeof(recv_msg), 0);
@@ -404,7 +392,9 @@ int udp_binary_handler(const char* host, int port)
         close(sockfd);
         return -1;
     }
-    printf("\nFINAL RESPONSE: message=%d BYTES RECEIVED: %zd\n", ntohl(recv_msg.message), bytes_received);
+    if(ntohl(recv_msg.message) == 1)
+    printf("OK\n");
+
 
     close(sockfd);
     return 0;
