@@ -51,7 +51,7 @@ int calculate(const char* buf)
 
 int calculate_protocol(const char* buf, size_t len, calcProtocol* msg)
 {
-  if(len != sizeof(calcProtocol)) return -1;
+  if(len < sizeof(calcProtocol)) return -1;
 
   const calcProtocol* in = (const calcProtocol*)buf;
 
@@ -292,31 +292,118 @@ int udp_text_handler(const char* host, int port)
   int sockfd = setup_connection(host, port, SOCK_DGRAM);
   if (sockfd < 0) return -1;  
 
+  char recv_buffer[1024];
+  ssize_t bytes_received; 
+
+  char send_buffer[32];
+  ssize_t bytes_sent;
+
   const char *msg = "TEXT UDP 1.1\n";
-  ssize_t sent = send(sockfd, msg, strlen(msg), 0);
-  if (sent == -1) {
+  bytes_sent = send(sockfd, msg, strlen(msg), 0);
+  if (bytes_sent == -1) {
     perror("UDP + TEXT: send");
     close(sockfd);
     return -1;
   }
 
-  char recv_buffer[1024];
-  ssize_t bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) - 1, 0);
+  bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) - 1, 0);
   if (bytes_received == -1) {
     perror("UDP + TEXT: recv");
     close(sockfd);
     return -1;
   }
 
-  printf("%s\n", recv_buffer);
+  printf("\n%s", recv_buffer); 
+  int result = calculate(recv_buffer);
+  snprintf(send_buffer, sizeof(send_buffer), "%d\n", result);
+  if (send(sockfd, send_buffer, strlen(send_buffer), 0) == -1) {
+    perror("TCP + TEXT: send result");
+    close(sockfd);
+    return -1;
+  }
 
+  if ((bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) - 1, 0)) <= 0) {
+    perror("TCP + TEXT: recv response");
+    close(sockfd);
+    return -1;
+  }
+
+  recv_buffer[bytes_received] = '\0';
+  printf("Server response: %s", recv_buffer);
   close(sockfd);
   return 0;
 }
 int udp_binary_handler(const char* host, int port)
 {
-  return 0;
+    printf("UDP + BINARY\n");
+    int sockfd = setup_connection(host, port, SOCK_DGRAM);
+    if (sockfd < 0) return -1;
+    calcMessage init_msg;
+    init_msg.type          = htons(22);
+    init_msg.message       = htonl(0);
+    init_msg.protocol      = htons(17);
+    init_msg.major_version = htons(1);
+    init_msg.minor_version = htons(1);
+    calcProtocol msg;
+    ssize_t bytes_received, bytes_sent;
+    char send_buffer[32];
+
+    bytes_sent = send(sockfd, &init_msg, sizeof(init_msg), 0);
+    if (bytes_sent <= 0) {
+        perror("UDP + BINARY: SEND");
+        close(sockfd);
+        return -1;
+    }
+    printf("\nFIRST SEND: %sBYTES SENT: %zd\n", send_buffer, bytes_sent);
+
+    bytes_received = recv(sockfd, &msg, sizeof(msg), 0);
+    if (bytes_received <= 0) {
+        perror("UDP + BINARY: RECV CALC");
+        close(sockfd);
+        return -1;
+    }
+    printf("\nRECIEVE CALC: BYTES RECEIVED: %zd\n", bytes_received);
+    unsigned char* raw = (unsigned char*)&msg;
+    printf("Raw bytes: ");
+    for (ssize_t i = 0; i < bytes_received; i++) {
+        printf("%02X ", raw[i]);
+    }
+
+    int result = calculate_protocol((char*)&msg, bytes_received, &msg);
+    printf("\nRESULT: %d\n", result);
+
+    msg.type = 2;
+    calcProtocol send_msg = msg;
+    send_msg.type          = htons(msg.type);
+    send_msg.major_version = htons(msg.major_version);
+    send_msg.minor_version = htons(msg.minor_version);
+    send_msg.id            = htonl(msg.id);
+    send_msg.arith         = htonl(msg.arith);
+    send_msg.inValue1      = htonl(msg.inValue1);
+    send_msg.inValue2      = htonl(msg.inValue2);
+    send_msg.inResult      = htonl(msg.inResult);
+
+    bytes_sent = send(sockfd, &send_msg, sizeof(send_msg), 0);
+    if (bytes_sent != sizeof(send_msg)) {
+        perror("UDP + BINARY: send result");
+        close(sockfd);
+        return -1;
+    }
+    printf("\nSEND RESULT: inResult=%d BYTES SENT: %zd\n", ntohl(send_msg.inResult), bytes_sent);
+
+    calcMessage recv_msg;
+    bytes_received = recv(sockfd, &recv_msg, sizeof(recv_msg), 0);
+    if (bytes_received <= 0) {
+        perror("UDP + BINARY: recv final response");
+        close(sockfd);
+        return -1;
+    }
+    printf("\nFINAL RESPONSE: message=%d BYTES RECEIVED: %zd\n", ntohl(recv_msg.message), bytes_received);
+
+    close(sockfd);
+    return 0;
 }
+
 
 
 
