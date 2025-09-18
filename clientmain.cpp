@@ -201,7 +201,7 @@ int tcp_text_handler(const char* host, int port)
   }
 
   recv_buffer[bytes_received] = '\0';
-  printf("%s\n", recv_buffer);
+  printf("OK (myresult=%d)\n", result);
   close(sockfd);
   return 0;
 }
@@ -275,7 +275,7 @@ int tcp_binary_handler(const char* host, int port)
   }
 
   if(ntohl(recv_msg.message) == 1)
-    printf("OK\n");
+    printf("OK (myresult=%d)\n", msg.inResult);
   close(sockfd);
   return 0;
 }
@@ -323,8 +323,8 @@ int udp_text_handler(const char* host, int port)
   }
 
   recv_buffer[bytes_received] = '\0';
-  
-  printf("%s\n", recv_buffer);
+  printf("OK (myresult=%d)\n", result);
+
   close(sockfd);
   return 0;
 }
@@ -384,9 +384,7 @@ int udp_binary_handler(const char* host, int port)
         return -1;
     }
     if(ntohl(recv_msg.message) == 1)
-    printf("OK\n");
-
-
+      printf("OK (myresult=%d)\n", msg.inResult);
     close(sockfd);
     return 0;
 }
@@ -517,13 +515,10 @@ int main(int argc, char *argv[]){
     return 1;
   }
 
-  // int bind(int sockfd, const struct sockaddr * addr, socklen_t addrlen);
-  
-  // struct sockaddr{
-  //   uint8_t sa_len;
-  //   sa_family_t sa_family_t;
-  //   char sa_data[14];
-  // };
+  #ifdef DEBUG 
+  printf("Protocol: %s Host %s, port = %d and path = %s.\n",protocol, Desthost,port, Destpath);
+  #endif
+
   for (int i = 0; protocolstring[i]; i++) {
     protocolstring[i] = tolower(protocolstring[i]);
   }
@@ -559,9 +554,4 @@ int main(int argc, char *argv[]){
     printf("INGET MATCHANDE PROTOCOL ELLER PATH");
     return -1;
   }
-  
-
-#ifdef DEBUG 
-  printf("Protocol: %s Host %s, port = %d and path = %s.\n",protocol, Desthost,port, Destpath);
-#endif
 }
