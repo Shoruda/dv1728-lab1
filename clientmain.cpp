@@ -167,13 +167,13 @@ int tcp_text_handler(const char* host, int port)
 
   if ((bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) -1, 0)) == -1)
   {
-    printf("ERROR\n");
+    printf("ERROR: MESSAGE LOST (TIMEOUT)\n");
     close(sockfd);
     return -1;
   }
 
   if (strncmp(recv_buffer, "TEXT TCP 1.1", 12) != 0) {
-    printf("ERROR\n");
+    printf("ERROR: MESSAGE LOST (TIMEOUT)\n");
     close(sockfd);
     return -1;
   }
@@ -187,7 +187,7 @@ int tcp_text_handler(const char* host, int port)
 
   if ((bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) -1, 0)) == -1)
   {
-    printf("ERROR\n");
+    printf("ERROR: MESSAGE LOST (TIMEOUT)\n");
     close(sockfd);
     return -1;
   }
@@ -203,7 +203,7 @@ int tcp_text_handler(const char* host, int port)
   }
   memset(recv_buffer, 0, sizeof(recv_buffer));
   if ((bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) - 1, 0)) <= 0) {
-    perror("TCP + TEXT: recv response");
+    printf("ERROR: MESSAGE LOST (TIMEOUT)\n");
     close(sockfd);
     return -1;
   }
