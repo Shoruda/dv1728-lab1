@@ -171,6 +171,12 @@ int tcp_text_handler(const char* host, int port)
     exit(1);
   }
 
+  if (strncmp(recv_buffer, "TEXT TCP 1.1", 12) != 0) {
+    printf("ERROR\n");
+    close(sockfd);
+    return -1;
+  }
+
   snprintf(send_buffer, sizeof(send_buffer), "TEXT TCP 1.1 OK\n");
   if (send(sockfd, send_buffer, strlen(send_buffer), 0) == -1) {
     perror("TCP + TEXT: send");
@@ -240,7 +246,7 @@ int tcp_binary_handler(const char* host, int port)
 
   bytes_received = recv(sockfd, &msg, sizeof(msg), 0);
   if (bytes_received != sizeof(msg)) {
-    perror("TCP + BINARY: recv");
+    printf("ERROR\n");
     close(sockfd);
     return -1;
   }
