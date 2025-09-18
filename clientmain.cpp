@@ -201,7 +201,9 @@ int tcp_text_handler(const char* host, int port)
   }
 
   recv_buffer[bytes_received] = '\0';
-  printf("OK (myresult=%d)\n", result);
+  if (strncmp(recv_buffer, "OK", 2) == 0) {
+    printf("OK (myresult=%d)\n", result);
+  }
   close(sockfd);
   return 0;
 }
@@ -323,8 +325,9 @@ int udp_text_handler(const char* host, int port)
   }
 
   recv_buffer[bytes_received] = '\0';
-  printf("OK (myresult=%d)\n", result);
-
+  if (strncmp(recv_buffer, "OK", 2) == 0) {
+    printf("OK (myresult=%d)\n", result);
+  }
   close(sockfd);
   return 0;
 }
