@@ -167,8 +167,9 @@ int tcp_text_handler(const char* host, int port)
 
   if ((bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) -1, 0)) == -1)
   {
-    perror("TCP + TEXT: recv");
-    exit(1);
+    printf("ERROR\n");
+    close(sockfd);
+    return -1;
   }
 
   if (strncmp(recv_buffer, "TEXT TCP 1.1", 12) != 0) {
@@ -179,15 +180,16 @@ int tcp_text_handler(const char* host, int port)
 
   snprintf(send_buffer, sizeof(send_buffer), "TEXT TCP 1.1 OK\n");
   if (send(sockfd, send_buffer, strlen(send_buffer), 0) == -1) {
-    perror("TCP + TEXT: send");
+    printf("ERROR\n");
     close(sockfd);
     return -1;
   }
 
   if ((bytes_received = recv(sockfd, recv_buffer, sizeof(recv_buffer) -1, 0)) == -1)
   {
-    perror("TCP + TEXT: recv");
-    exit(1);
+    printf("ERROR\n");
+    close(sockfd);
+    return -1;
   }
 
   recv_buffer[bytes_received] = '\0';
@@ -209,6 +211,10 @@ int tcp_text_handler(const char* host, int port)
   recv_buffer[bytes_received] = '\0';
   if (strncmp(recv_buffer, "OK", 2) == 0) {
     printf("OK (myresult=%d)\n", result);
+  }
+  else
+  {
+    printf("ERROR\n");
   }
   close(sockfd);
   return 0;
